@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -87,3 +88,47 @@ def MA_plot(results_input,effect_threshold=2,horizontal_line=True,figsize=(12,8)
     plt.xlabel('Abundance')
     plt.title(title)
     return None
+
+def vulcano_plot(results_input,pBH_threshold=0.1,logFC_threshold=1,legend=True,figsize=(10,10),title='Vulcano plot')->None:
+    """
+    Plot the vulcano plot of ALDEx2 results.
+
+    Returns:
+        None.
+
+    Arguments:
+        results_input -> pd.DataFrame: A dataframe with the results of ALDEx2.
+        pBH_threshold -> float: The threshold for the pBH value in order to mark the points as significant. Default is 0.1.
+        logFC_threshold -> float: The threshold for the logFC value in order to mark the points as significant. Default is 1.
+        legend -> bool: If True, a legend is drawn. Default is True.
+        figsize -> tuple: The size of the figure. Default is (10,10).
+        title -> str: The title of the figure. Default is 'Vulcano plot'.
+
+    """
+    results = results_input.copy()
+    for_vulcano = results[['diff.btw','we.eBH']].reset_index().rename(columns={'index':'gene'})
+    for_vulcano = for_vulcano.rename(columns={'diff.btw':'median_diff','we.eBH':'pBH'})
+
+    for_vulcano['log_pValue'] = for_vulcano['pBH'].apply(lambda x: -np.log10(x))
+    for_vulcano['log_FC'] = for_vulcano['median_diff']
+    logPvalues = for_vulcano.log_pValue
+    logFCs = for_vulcano.log_FC
+    plt.figure(figsize=figsize)
+
+    hue= for_vulcano.gene.copy()
+    hue.loc[logPvalues<-np.log10(pBH_threshold)*0.99]=None
+    ax=sns.scatterplot(y='log_pValue',x= 'log_FC' ,data=for_vulcano,hue= hue, alpha=1)
+    ax=sns.scatterplot(y='log_pValue',x= 'log_FC' ,data=for_vulcano.loc[hue.isnull()],
+                    color='grey',marker='.')
+
+    #ax.set_xlabel('TGOLD'+'    '*10+'TOVA'+'\nlogFC', fontsize=20) # TODO: Add the labels to x axis depending on the condition names
+    ax.set_xlabel('logFC',fontsize=20)
+    ax_lim= np.abs(ax.get_xlim()).max()
+    ax.set_xlim([-ax_lim,ax_lim])
+    ax.set_ylabel('$-\log(P_{BH})$', fontsize=20)
+    plt.axvline(x=-(logFC_threshold),color='red',linestyle = "--",linewidth = 1)
+    plt.axvline(x=logFC_threshold, color = 'red',linestyle = "--", linewidth = 1)
+    plt.axhline(y=-np.log10(pBH_threshold), color = 'red',linestyle = "--", linewidth = 1)
+    plt.title(title)
+    if legend == False:
+        ax.get_legend().remove()
