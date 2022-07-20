@@ -36,7 +36,7 @@ def run_aldex2(counts:pd.DataFrame,metadata:pd.DataFrame,test:str,r_script_path:
     metadata = metadata.loc[counts.columns].iloc[:,0]
     categories = metadata.values.tolist()
     cond = ro.StrVector(categories)
-    montecarlo_samples = int(1000 / metadata.value_counts().values.min())
+    montecarlo_samples = int(1000 / metadata.value_counts().values.min()) # This is the lowest number of samples recommended by aldex2.
     print(f"Running with {montecarlo_samples} montecarlo samples!")
     print("Starting ALDEx2!")
     df_result_r = run_aldex_function_r(df_r, cond, montecarlo_samples, test)
