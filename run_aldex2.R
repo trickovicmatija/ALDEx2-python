@@ -12,5 +12,6 @@ run_aldex <- function(counts, cond, mc.samples, test){
   #
   results <- aldex(counts, cond, mc.samples=mc.samples, test=test, effect=TRUE,
                  include.sample.summary=FALSE, denom="all", verbose=FALSE, paired.test=FALSE)
+  
   return(results)
 }
