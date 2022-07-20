@@ -50,7 +50,7 @@ You can create a MA-plot using ```pyaldex2.MA_plot()```:
 ```python
 pyaldex2.MA_plot(result_df,effect_threshold=1)
 ```
-Check help of the function for details.
+Check [help of the function](https://github.com/trickovicmatija/ALDEx2-python/blob/d7dcc5a0a342f61e641f1e89c20c5ead3ffcbaea/pyaldex2.py#L57) for details.
 
 
 # Disclaimer
