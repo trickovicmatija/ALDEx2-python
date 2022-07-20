@@ -54,7 +54,7 @@ def run_aldex2(counts:pd.DataFrame,metadata:pd.DataFrame,test:str,r_script_path:
     return df_result
 
 
-def MA_plot(results_input,effect_threshold=2,horizontal_line=True,figsize=(12,8)):
+def MA_plot(results_input,effect_threshold=2,horizontal_line=True,figsize=(12,8),title='MA plot'):
     """
     Plot the MA plot of ALDEx2 results.
 
@@ -63,18 +63,27 @@ def MA_plot(results_input,effect_threshold=2,horizontal_line=True,figsize=(12,8)
 
     Arguments:
         results_input -> pd.DataFrame: A dataframe with the results of ALDEx2.
+        effect_threshold -> float: The threshold for the effect size value in order to mark the points red.
+        horizontal_line -> bool: If True, a horizontal line is drawn at value 0.
+        figsize -> tuple: The size of the figure.
+        title -> str: The title of the figure.
     """
     results = results_input.copy()
     results['effect_hue']=results['effect'].apply(lambda x: f'abs(effect) > {effect_threshold}' if abs(x) >effect_threshold else f'abs(effect) < {effect_threshold}')
     results['size']=results['effect'].apply(lambda x: 'big' if abs(x) >effect_threshold else "small")
     color_dict = dict({f'abs(effect) > {effect_threshold}':'red',f'abs(effect) < {effect_threshold}': 'black'})
-    size_dict=dict({'small':5,'big':10})
+    size_dict=dict({'small':5,'big':20})
     fig, ax = plt.subplots(figsize=figsize)
     sns.scatterplot(x='rab.all',y='diff.btw',hue='effect_hue',data=results,palette=color_dict,size='size',sizes=size_dict,legend='full',ax=ax)
     if horizontal_line:
         plt.axhline(y=0,color='black',lw=1, ls='--')
     legend = ax.legend()
     handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles=handles[1:3], labels=labels[1:3], title="")
+    if len(results['size'].value_counts()) == 1:
+        ax.get_legend().remove()
+    else:
+        ax.legend(handles=handles[1:3], labels=labels[1:3], title="")
     plt.ylabel('Difference')
     plt.xlabel('Abundance')
+    plt.title(title)
+    return None

@@ -15,7 +15,7 @@ Activate the environment:
 conda activate pyaldex2
 ```
 
-### Run it
+## Run it
 Clone this repository to a convinient location to store the script:
 ```sh
 git clone https://github.com/trickovicmatija/ALDEx2-python.git
@@ -41,8 +41,17 @@ Run the script:
 ```python
 result_df = pyaldex2.run_aldex2(counts,metadata,'t',r_script_path=path)
 ```
-
 For the description of ALDEx2 output see [here](https://bioconductor.org/packages/release/bioc/vignettes/ALDEx2/inst/doc/ALDEx2_vignette.html#5_ALDEx2_outputs).
+
+## Plot
+
+You can create a MA-plot using ```pyaldex2.MA_plot()```:
+
+```python
+pyaldex2.MA_plot(result_df,effect_threshold=1)
+```
+Check help of the function for details.
+
 
 # Disclaimer
 
