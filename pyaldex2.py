@@ -2,12 +2,23 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os, sys
+
 
 import rpy2.robjects as ro
 from rpy2.robjects import pandas2ri
 from rpy2.robjects.conversion import localconverter
 
 
+
+class HiddenPrints:
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, 'w')
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout
 
 def run_aldex2(counts:pd.DataFrame,metadata:pd.DataFrame,test:str,r_script_path:str,mc_samples='auto')->pd.DataFrame:
     """
@@ -54,6 +65,52 @@ def run_aldex2(counts:pd.DataFrame,metadata:pd.DataFrame,test:str,r_script_path:
         df_result = ro.conversion.rpy2py(df_result_r)
     return df_result
 
+def get_clr_instance(counts:pd.DataFrame,metadata:pd.DataFrame,r_script_path:str,instance=1,mc_samples='auto')->pd.DataFrame:
+    """
+    Run ALDEx2 to get one CLR instance.
+    
+    Returns:
+        pd.DataFrame: A dataframe with the CLR-transformed data.
+    
+    Arguments:
+        counts -> pd.DataFrame: A dataframe with the raw counts.
+        metadata -> pd.DataFrame: A dataframe with the metadata.
+        r_script_path -> str: The path to the R script to run ALDEx2.
+        mc_samples -> int: The number of Monte Carlo samples to use. If set to 'auto',
+            the number of samples is determined automatically.
+ 
+        """
+    r = ro.r
+    r['source'](str(r_script_path))
+    get_clr_function_r = ro.globalenv['get_clr']
+    input_counts = counts.copy()
+    if input_counts.shape[1] != metadata.shape[0]:
+        input_counts = input_counts.T
+    assert input_counts.shape[1] == metadata.shape[0], "Counts dataframe and metadata need to have same number of samples"
+    metadata = metadata.loc[input_counts.columns].iloc[:,0]
+    categories = metadata.values.tolist()
+    cond = ro.StrVector(categories)
+    if mc_samples=='auto' :
+        montecarlo_samples = int(1000 / metadata.value_counts().values.min()) # This is the lowest number of samples recommended by aldex2.
+    else:
+        montecarlo_samples = int(mc_samples)
+    input_counts = input_counts.loc[input_counts.sum(1) > 0] # Remove features with zero counts in all samples.
+    with localconverter(ro.default_converter + pandas2ri.converter):
+        df_r = ro.conversion.py2rpy(input_counts)
+    print(f"Running with {montecarlo_samples} montecarlo samples!")
+    print("Starting ALDEx2 to get clr-transformed values!")
+    df_result_r = get_clr_function_r(df_r, cond, montecarlo_samples, instance)
+    print("Finished!")
+    with localconverter(ro.default_converter + pandas2ri.converter):
+        df_result = pd.DataFrame(ro.conversion.rpy2py(df_result_r), columns = metadata.index,index=input_counts.index)
+    return df_result
+
+def get_clr(counts:pd.DataFrame,metadata:pd.DataFrame,mc_samples:int,r_script_path:str)->pd.DataFrame:
+    dfs = {}
+    for i in range(1,mc_samples+1):
+        dfs[i] = get_clr_instance(counts=counts,metadata=metadata,r_script_path=r_script_path,instance=i,mc_samples=mc_samples)
+    averages = pd.concat([each.stack() for each in dfs.values()],axis=1).apply(lambda x:x.median(),axis=1).unstack()
+    return averages
 
 def MA_plot(results_input,effect_threshold=2,horizontal_line=True,figsize=(12,8),title='MA plot')->None:
     """
@@ -131,4 +188,5 @@ def vulcano_plot(results_input,pBH_threshold=0.1,logFC_threshold=1,legend=True,f
     plt.axhline(y=-np.log10(pBH_threshold), color = 'red',linestyle = "--", linewidth = 1)
     plt.title(title)
     if legend == False:
-        ax.get_legend().remove()
+        if ax.get_legend():
+            ax.get_legend().remove()
