@@ -43,6 +43,19 @@ result_df = pyaldex2.run_aldex2(counts,metadata,'t',r_script_path=path)
 ```
 For the description of ALDEx2 output see [here](https://bioconductor.org/packages/release/bioc/vignettes/ALDEx2/inst/doc/ALDEx2_vignette.html#5_ALDEx2_outputs).
 
+You can also get CLR-transformed data, which represent a median between all created Monte-Carlo instances:
+
+```python
+clr_data = pyaldex2.get_clr(counts,metadata,mc_samples=16,r_script_path=path)
+```
+
+Or, you can get only one instance:
+
+```python
+clr_instance = pyaldex2.get_clr_instance(counts,metadata,instance=1,mc_samples=16,r_script_path=path)
+
+```
+
 ## Plot
 
 Before plotting, make sure neccessary libraries (numpy, seaborn, matplotlib.pyplot) are installed.
