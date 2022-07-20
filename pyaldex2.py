@@ -6,7 +6,7 @@ from rpy2.robjects.conversion import localconverter
 
 
 
-def run_aldex2(counts:pd.DataFrame,metadata:pd.DataFrame,test:str,r_script_path:str)->pd.DataFrame:
+def run_aldex2(counts:pd.DataFrame,metadata:pd.DataFrame,test:str,r_script_path:str,mc_samples='auto')->pd.DataFrame:
     """
     Run ALDEx2 on a raw counts dataframe.
     
@@ -22,6 +22,8 @@ def run_aldex2(counts:pd.DataFrame,metadata:pd.DataFrame,test:str,r_script_path:
             'glm': Generalized linear model test using model.matrix,
             'corr': Correlation test using cor.test.
         r_script_path -> str: The path to the R script to run ALDEx2.
+        mc_samples -> int: The number of Monte Carlo samples to use. If set to 'auto',
+            the number of samples is determined automatically.
  
         """
     r = ro.r
@@ -36,7 +38,10 @@ def run_aldex2(counts:pd.DataFrame,metadata:pd.DataFrame,test:str,r_script_path:
     metadata = metadata.loc[counts.columns].iloc[:,0]
     categories = metadata.values.tolist()
     cond = ro.StrVector(categories)
-    montecarlo_samples = int(1000 / metadata.value_counts().values.min()) # This is the lowest number of samples recommended by aldex2.
+    if mc_samples=='auto' :
+        montecarlo_samples = int(1000 / metadata.value_counts().values.min()) # This is the lowest number of samples recommended by aldex2.
+    else:
+        montecarlo_samples = int(mc_samples)
     print(f"Running with {montecarlo_samples} montecarlo samples!")
     print("Starting ALDEx2!")
     df_result_r = run_aldex_function_r(df_r, cond, montecarlo_samples, test)
