@@ -45,13 +45,19 @@ For the description of ALDEx2 output see [here](https://bioconductor.org/package
 
 ## Plot
 
-You can create a MA-plot using ```pyaldex2.MA_plot()```:
+You can create a **MA-plot** using ```pyaldex2.MA_plot()```:
 
 ```python
 pyaldex2.MA_plot(result_df,effect_threshold=1)
 ```
 Check [help of the function](https://github.com/trickovicmatija/ALDEx2-python/blob/d7dcc5a0a342f61e641f1e89c20c5ead3ffcbaea/pyaldex2.py#L57) for details.
 
+Also, you can create a **vulcano-plot** using ```pyaldex2.vulcano_plot()```:
+
+```python
+pyaldex2.MA_plot(result_df)
+```
+Check [help of the function](https://github.com/trickovicmatija/ALDEx2-python/blob/b00bcf32d92a984d7dc279e9a85c24151cc00ff5/pyaldex2.py#L92) for details.
 
 # Disclaimer
 
