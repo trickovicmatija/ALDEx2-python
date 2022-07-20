@@ -20,7 +20,7 @@ Clone this repository to a convinient location to store the script:
 ```sh
 git clone https://github.com/trickovicmatija/ALDEx2-python.git
 ```
-Import the module and set the path
+Import the module and set the path:
 ```python
 import pandas as pd
 import sys, os
