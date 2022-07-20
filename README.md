@@ -45,6 +45,10 @@ For the description of ALDEx2 output see [here](https://bioconductor.org/package
 
 ## Plot
 
+Before plotting, make sure neccessary libraries (numpy, seaborn, matplotlib.pyplot) are installed.
+
+If not, install them in order to continue.
+
 You can create a **MA-plot** using ```pyaldex2.MA_plot()```:
 
 ```python
