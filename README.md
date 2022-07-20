@@ -39,3 +39,5 @@ Run the script:
 ```python
 result_df = pyaldex2.run_aldex2(counts,metadata,'t',r_script_path=path)
 ```
+
+For the description of ALDEx2 output see [here](https://bioconductor.org/packages/release/bioc/vignettes/ALDEx2/inst/doc/ALDEx2_vignette.html#5_ALDEx2_outputs).
