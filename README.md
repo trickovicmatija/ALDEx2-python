@@ -32,8 +32,8 @@ path = f'{os.path.dirname(pyaldex2.__file__)}/run_aldex2.R' # Set the path of th
 Import test data:
 
 ```python
-counts = pd.read_csv("test_data/raw_counts.tsv,sep='\t')
-metadata = pd.read_csv("test_data/metadata.tsv",sep='\t')
+counts = pd.read_csv("test_data/raw_counts.tsv",sep='\t',index_col=0)
+metadata = pd.read_csv("test_data/metadata.tsv",sep='\t',index_col=0)
 ```
 Run the script:
 ```python
@@ -42,7 +42,7 @@ result_df = pyaldex2.run_aldex2(counts,metadata,'t',r_script_path=path)
 
 For the description of ALDEx2 output see [here](https://bioconductor.org/packages/release/bioc/vignettes/ALDEx2/inst/doc/ALDEx2_vignette.html#5_ALDEx2_outputs).
 
-## Disclamer
+# Disclamer
 
 This script is only running the original [ALDEx2 tool](https://github.com/ggloor/ALDEx_bioc) in Python.
 For any questions about the tool itself, please write to them.
