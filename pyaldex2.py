@@ -54,7 +54,7 @@ def run_aldex2(counts:pd.DataFrame,metadata:pd.DataFrame,test:str,r_script_path:
     return df_result
 
 
-def MA_plot(results_input,effect_threshold=2,horizontal_line=True,figsize=(12,8),title='MA plot'):
+def MA_plot(results_input,effect_threshold=2,horizontal_line=True,figsize=(12,8),title='MA plot')->None:
     """
     Plot the MA plot of ALDEx2 results.
 
@@ -63,10 +63,10 @@ def MA_plot(results_input,effect_threshold=2,horizontal_line=True,figsize=(12,8)
 
     Arguments:
         results_input -> pd.DataFrame: A dataframe with the results of ALDEx2.
-        effect_threshold -> float: The threshold for the effect size value in order to mark the points red.
-        horizontal_line -> bool: If True, a horizontal line is drawn at value 0.
-        figsize -> tuple: The size of the figure.
-        title -> str: The title of the figure.
+        effect_threshold -> float: The threshold for the effect size value in order to mark the points red. Default is 2.
+        horizontal_line -> bool: If True, a horizontal line is drawn at value 0. Default is True.
+        figsize -> tuple: The size of the figure. Default is (12,8).
+        title -> str: The title of the figure. Default is 'MA plot'.
     """
     results = results_input.copy()
     results['effect_hue']=results['effect'].apply(lambda x: f'abs(effect) > {effect_threshold}' if abs(x) >effect_threshold else f'abs(effect) < {effect_threshold}')
