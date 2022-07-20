@@ -59,7 +59,7 @@ Check [help of the function](https://github.com/trickovicmatija/ALDEx2-python/bl
 Also, you can create a **vulcano-plot** using ```pyaldex2.vulcano_plot()```:
 
 ```python
-pyaldex2.MA_plot(result_df)
+pyaldex2.vulcano_plot(result_df)
 ```
 Check [help of the function](https://github.com/trickovicmatija/ALDEx2-python/blob/b00bcf32d92a984d7dc279e9a85c24151cc00ff5/pyaldex2.py#L92) for details.
 
