@@ -1,6 +1,6 @@
 # ALDEx2-python
 
- Run a popular [ALDEx2 tool](https://github.com/ggloor/ALDEx_bioc) in Python via [rpy2](https://github.com/rpy2/rpy2).
+ Run a popular [ALDEx2 tool](https://bioconductor.org/packages/release/bioc/html/ALDEx2.html) in Python via [rpy2](https://github.com/rpy2/rpy2).
 
  This tool is aware of the compositionality of sequencing data, and treats them accordingly.
 
@@ -65,6 +65,6 @@ Check [help of the function](https://github.com/trickovicmatija/ALDEx2-python/bl
 
 # Disclaimer
 
-This script is only running the original [ALDEx2 tool](https://github.com/ggloor/ALDEx_bioc) in Python.
+This script is only running the original [ALDEx2 tool](https://bioconductor.org/packages/release/bioc/html/ALDEx2.html) in Python.
 I don't take any responsibility or credits from it.
 For any questions about the tool itself, please write to them.
