@@ -1,6 +1,7 @@
 # ALDEx2-python
 
- Run a popular [ALDEx2 tool](https://github.com/ggloor/ALDEx_bioc) in Python.
+ Run a popular [ALDEx2 tool](https://github.com/ggloor/ALDEx_bioc) in Python via [rpy2](https://github.com/rpy2/rpy2).
+
  This tool is aware of the compositionality of sequencing data, and treats them accordingly.
 
 ### Dependencies
