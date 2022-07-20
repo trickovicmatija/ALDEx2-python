@@ -23,7 +23,7 @@ Import the module and set the path
 import pandas as pd
 import sys, os
 
-sys.path.append("/Users/trickovi/scripts/") # Append the location of cloned repository
+sys.path.append("./ALDEx2-python") # Append the location of cloned repository
 import pyaldex2
 
 path = f'{os.path.dirname(pyaldex2.__file__)}/run_aldex2.R' # Set the path of the "run_aldex2.R" R-script. Default: same directory as the Python module.
