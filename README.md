@@ -32,7 +32,7 @@ path = f'{os.path.dirname(pyaldex2.__file__)}/run_aldex2.R' # Set the path of th
 Import test data:
 
 ```python
-counts = pd.read_csv("test_data/counts.tsv,sep='\t')
+counts = pd.read_csv("test_data/raw_counts.tsv,sep='\t')
 metadata = pd.read_csv("test_data/metadata.tsv",sep='\t')
 ```
 Run the script:
