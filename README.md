@@ -25,7 +25,7 @@ Import the module and set the path:
 import pandas as pd
 import sys, os
 
-sys.path.append("./ALDEx2-python") # Append the location of cloned repository
+sys.path.append("<CHANGE_PATH>/ALDEx2-python") # Append the location of cloned repository
 import pyaldex2
 
 path = f'{os.path.dirname(pyaldex2.__file__)}/run_aldex2.R' # Set the path of the "run_aldex2.R" R-script. Default: same directory as the Python module.
@@ -34,8 +34,8 @@ path = f'{os.path.dirname(pyaldex2.__file__)}/run_aldex2.R' # Set the path of th
 Import test data:
 
 ```python
-counts = pd.read_csv("test_data/raw_counts.tsv",sep='\t',index_col=0) # It will automatically orient the dataframe
-metadata = pd.read_csv("test_data/metadata.tsv",sep='\t',index_col=0)
+counts = pd.read_csv("<CHANGE_PATH>/ALDEx2-python/test_data/raw_counts.tsv",sep='\t',index_col=0) # It will automatically orient the dataframe
+metadata = pd.read_csv("<CHANGE_PATH>/ALDEx2-python/test_data/metadata.tsv",sep='\t',index_col=0)
 ```
 Run the script:
 ```python
